@@ -1,18 +1,23 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import BarChart from 'react-native-bar-chart';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  // const data = [70, -10, 110, 80, 130];
+  const data = [
+    [70, -5],
+    [80, -10],
+    [110, 0],
+    [100, 0],
+    [280, -60],
+  ];
 
-  React.useEffect(() => {
-    BarChart.multiply(3, 7).then(setResult);
-  }, []);
+  const horizontalData = ['April', 'May', 'June', 'July', 'August'];
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <BarChart data={data} horizontalData={horizontalData} prefix="$" />
     </View>
   );
 }
@@ -20,12 +25,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
   },
 });
