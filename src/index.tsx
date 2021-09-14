@@ -8,9 +8,13 @@ type Props = {
   data: DataSet;
   horizontalData: string[];
   backgroundColor?: string;
+  barColor?: string;
+  secondBarColor?: string;
   height?: number;
   prefix?: string;
   suffix?: string;
+  barLabelColor?: string;
+  labelColor?: string;
 };
 
 const defaultHeight = Dimensions.get('window').height / 2.2;
@@ -45,10 +49,12 @@ const HorizontalDots = ({
   labels,
   prefix,
   suffix,
+  labelColor,
 }: {
   labels: number[];
   prefix?: string;
   suffix?: string;
+  labelColor?: string;
 }) => {
   return (
     <View
@@ -73,7 +79,7 @@ const HorizontalDots = ({
             <View style={{ flex: 0.125 }}>
               <Text
                 style={{
-                  color: '#D8D8D8',
+                  color: labelColor || '#D8D8D8',
                   marginTop: -10,
                   alignSelf: 'center',
                 }}
@@ -87,7 +93,7 @@ const HorizontalDots = ({
                 dashGap={index === labels.length - 1 ? 0 : 2}
                 dashLength={4}
                 dashThickness={1}
-                dashColor="#D8D8D8"
+                dashColor={labelColor || '#D8D8D8'}
               />
             </View>
           </View>
@@ -102,11 +108,19 @@ const HorizontalLablesData = ({
   data,
   prefix,
   suffix,
+  barColor,
+  secondBarColor,
+  barLabelColor,
+  labelColor,
 }: {
   label: string[];
   data: DataSet;
   prefix?: string;
   suffix?: string;
+  barColor?: string;
+  secondBarColor?: string;
+  barLabelColor?: string;
+  labelColor?: string;
 }) => {
   const lenght = label.length;
   const width = 100 / lenght;
@@ -139,7 +153,7 @@ const HorizontalLablesData = ({
                     <View style={{ alignItems: 'center' }}>
                       <Text
                         style={{
-                          color: '#383838',
+                          color: barLabelColor || '#383838',
                           fontSize: 12,
                           marginBottom: 5,
                         }}
@@ -157,14 +171,14 @@ const HorizontalLablesData = ({
                             (Math.abs((data as number[][])[index][0]) / max) *
                               100
                           )}%`,
-                          backgroundColor: '#FFD33D',
+                          backgroundColor: barColor || '#FFD33D',
                         }}
                       />
                     </View>
                     <View style={{ alignItems: 'center' }}>
                       <Text
                         style={{
-                          color: '#383838',
+                          color: barLabelColor || '#383838',
                           fontSize: 12,
                           marginBottom: 5,
                         }}
@@ -183,7 +197,7 @@ const HorizontalLablesData = ({
                               100
                           )}%`,
                           marginHorizontal: 5,
-                          backgroundColor: '#E64B38',
+                          backgroundColor: secondBarColor || '#E64B38',
                         }}
                       />
                     </View>
@@ -192,7 +206,7 @@ const HorizontalLablesData = ({
                   <View>
                     <Text
                       style={{
-                        color: '#383838',
+                        color: barLabelColor || '#383838',
                         fontSize: 11,
                         marginBottom: 5,
                       }}
@@ -210,7 +224,9 @@ const HorizontalLablesData = ({
                           (Math.abs(data[index] as number) / max) * 100
                         }%`,
                         backgroundColor:
-                          data[index] < 0 ? '#E64B38' : '#FFD33D',
+                          data[index] < 0
+                            ? secondBarColor || '#E64B38'
+                            : barColor || '#FFD33D',
                       }}
                       key={index.toString()}
                     />
@@ -248,7 +264,10 @@ const HorizontalLablesData = ({
                   width: `${width}%`,
                 }}
               >
-                <Text style={{ color: '#D8D8D8' }} numberOfLines={1}>
+                <Text
+                  style={{ color: labelColor || '#D8D8D8' }}
+                  numberOfLines={1}
+                >
                   {item}
                 </Text>
               </View>
@@ -274,12 +293,17 @@ const BarChart = (props: Props) => {
         labels={verticalLabels}
         prefix={props.prefix}
         suffix={props.suffix}
+        labelColor={props.labelColor}
       />
       <HorizontalLablesData
         label={props.horizontalData}
         data={props.data}
         prefix={props.prefix}
         suffix={props.suffix}
+        barColor={props.barColor}
+        secondBarColor={props.secondBarColor}
+        barLabelColor={props.barLabelColor}
+        labelColor={props.labelColor}
       />
     </View>
   );
